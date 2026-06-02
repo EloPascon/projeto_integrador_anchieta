@@ -1,0 +1,6 @@
+# Dependências mínimas do projeto
+# Não há bibliotecas externas obrigatórias; usar somente a stdlib.
+# Opcional: instalar para formatação bonita em console durante execução.
+
+# Biblioteca opcional usada apenas para exibir tabelas no console (não obrigatória)
+tabulate>=0.8.9
