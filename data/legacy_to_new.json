@@ -1,0 +1,16 @@
+{
+  "raw_customers": [
+    {
+      "raw_name": "Eloisa Pascon",
+      "raw_address": "R.Florianopolis",
+      "raw_cep": "13202141"
+    }
+  ],
+  "normalized_customers": [
+    {
+      "name": "Eloisa Pascon",
+      "address": "R.Florianopolis",
+      "cep": "13202-141"
+    }
+  ]
+}

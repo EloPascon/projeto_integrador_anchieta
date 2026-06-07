@@ -8,3 +8,13 @@
 2026-06-02 09:46:38,689 [INFO] etl.loader: Inserindo 4 pedidos e 8 itens
 2026-06-02 09:46:38,712 [INFO] etl.loader: Carga concluída com sucesso
 2026-06-02 09:46:38,712 [INFO] root: Snapshot após carga:
+2026-06-07 00:57:29,019 [INFO] root: Criando bancos de exemplo...
+2026-06-07 00:57:29,057 [INFO] root: Extraindo dados...
+2026-06-07 00:57:29,060 [INFO] root: Snapshot antes da transformação:
+2026-06-07 00:57:29,063 [INFO] root: Transformando dados...
+2026-06-07 00:57:29,064 [INFO] root: Carregando dados no destino...
+2026-06-07 00:57:29,066 [INFO] etl.loader: Inserindo 5 produtos
+2026-06-07 00:57:29,068 [INFO] etl.loader: Inserindo 4 clientes
+2026-06-07 00:57:29,069 [INFO] etl.loader: Inserindo 4 pedidos e 8 itens
+2026-06-07 00:57:29,073 [INFO] etl.loader: Carga concluída com sucesso
+2026-06-07 00:57:29,073 [INFO] root: Snapshot após carga:

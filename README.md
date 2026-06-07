@@ -36,6 +36,23 @@ O script `main.py` irá:
 - carregar os registros normalizados no banco destino
 - imprimir no console o estado antes e depois da carga
 
+### Novos sistemas interativos
+
+O repositório agora inclui dois scripts adicionais que funcionam no mesmo projeto:
+
+- `legacy_system.py` — sistema legado interativo que permite cadastrar clientes pelo terminal e salva os dados brutos em `data/legacy_to_new.json`.
+- `new_system.py` — sistema novo que lê esse arquivo gerado e mostra os dados convertidos no formato do sistema moderno.
+
+Como usar:
+
+```powershell
+python legacy_system.py
+```
+
+O `legacy_system.py` pede nome, endereço e CEP e usa o conversor de dados para normalizar as informações. Ao final, ele pergunta se você deseja abrir o `new_system.py` imediatamente.
+
+O `new_system.py` mostra o valor original e o valor convertido lado a lado.
+
 Uso de IA no desenvolvimento (para relatório acadêmico)
 - As expressões regulares usadas em `etl/transformer.py` foram projetadas para capturar variações de grafia e erros de digitação (ex.: "Muzzarela", "Mussarela", "muza") e mapear para identificadores padrão de produto (ex.: `PZ001` -> "Mussarela").
 - A lógica de normalização (regex, parsing de quantidades, normalização de telefones) representa técnicas que podem ser derivadas ou refinadas com o auxílio de modelos de IA para identificar padrões de erro e sugerir regras.
