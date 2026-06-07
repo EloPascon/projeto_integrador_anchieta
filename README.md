@@ -49,9 +49,9 @@ Como usar:
 python legacy_system.py
 ```
 
-O `legacy_system.py` pede nome, endereço e CEP e usa o conversor de dados para normalizar as informações. Ao final, ele pergunta se você deseja abrir o `new_system.py` imediatamente.
+O `legacy_system.py` pede nome, endereço, CEP, sabor da pizza e forma de pagamento, e usa o conversor de dados para normalizar as informações. Ao final, ele pergunta se você deseja abrir o `new_system.py` imediatamente.
 
-O `new_system.py` mostra o valor original e o valor convertido lado a lado.
+O `new_system.py` mostra o valor original e o valor convertido lado a lado, incluindo o sabor da pizza e a forma de pagamento.
 
 Uso de IA no desenvolvimento (para relatório acadêmico)
 - As expressões regulares usadas em `etl/transformer.py` foram projetadas para capturar variações de grafia e erros de digitação (ex.: "Muzzarela", "Mussarela", "muza") e mapear para identificadores padrão de produto (ex.: `PZ001` -> "Mussarela").

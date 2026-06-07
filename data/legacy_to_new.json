@@ -2,15 +2,19 @@
   "raw_customers": [
     {
       "raw_name": "Eloisa Pascon",
-      "raw_address": "R.Florianopolis",
-      "raw_cep": "13202141"
+      "raw_address": "R. florianopolis",
+      "raw_cep": "13202141",
+      "raw_flavor": "muçarella",
+      "raw_payment": "credito"
     }
   ],
   "normalized_customers": [
     {
       "name": "Eloisa Pascon",
-      "address": "R.Florianopolis",
-      "cep": "13202-141"
+      "address": "R. Florianopolis",
+      "cep": "13202-141",
+      "flavor": "Muarella",
+      "payment_method": "Cartão de Crédito"
     }
   ]
 }

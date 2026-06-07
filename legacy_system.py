@@ -32,10 +32,14 @@ def collect_customers() -> List[Dict]:
             break
         raw_address = prompt_input('Endereço: ')
         raw_cep = prompt_input('CEP: ')
+        raw_flavor = prompt_input('Sabor da pizza: ')
+        raw_payment = prompt_input('Forma de pagamento: ')
         customers.append({
             'raw_name': raw_name,
             'raw_address': raw_address,
             'raw_cep': raw_cep,
+            'raw_flavor': raw_flavor,
+            'raw_payment': raw_payment,
         })
         print('Cliente adicionado. Informe o próximo ou deixe o nome vazio para finalizar.\n')
 
@@ -60,17 +64,29 @@ def render_table(rows: List[Dict], headers: List[str]) -> str:
 def show_summary(raw_customers: List[Dict], normalized_customers: List[Dict]) -> None:
     print('\n=== Dados enviados pelo sistema legado ===')
     raw_rows = [
-        {'Nome': r['raw_name'], 'Endereço': r['raw_address'], 'CEP': r['raw_cep']}
+        {
+            'Nome': r['raw_name'],
+            'Endereço': r['raw_address'],
+            'CEP': r['raw_cep'],
+            'Sabor': r.get('raw_flavor', ''),
+            'Pagamento': r.get('raw_payment', ''),
+        }
         for r in raw_customers
     ]
-    print(render_table(raw_rows, ['Nome', 'Endereço', 'CEP']))
+    print(render_table(raw_rows, ['Nome', 'Endereço', 'CEP', 'Sabor', 'Pagamento']))
 
     print('\n=== Dados após conversão para o sistema novo ===')
     normalized_rows = [
-        {'Nome': n['name'], 'Endereço': n['address'], 'CEP': n['cep']}
+        {
+            'Nome': n['name'],
+            'Endereço': n['address'],
+            'CEP': n['cep'],
+            'Sabor': n.get('flavor', ''),
+            'Pagamento': n.get('payment_method', ''),
+        }
         for n in normalized_customers
     ]
-    print(render_table(normalized_rows, ['Nome', 'Endereço', 'CEP']))
+    print(render_table(normalized_rows, ['Nome', 'Endereço', 'CEP', 'Sabor', 'Pagamento']))
 
 
 def prompt_yes_no(prompt: str) -> bool:

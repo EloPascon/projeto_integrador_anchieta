@@ -48,12 +48,20 @@ def show_new_system_data(payload: Dict) -> None:
             'Nome (orig.)': raw.get('raw_name', ''),
             'Endereço (orig.)': raw.get('raw_address', ''),
             'CEP (orig.)': raw.get('raw_cep', ''),
+            'Sabor (orig.)': raw.get('raw_flavor', ''),
+            'Pagamento (orig.)': raw.get('raw_payment', ''),
             'Nome (novo)': norm.get('name', ''),
             'Endereço (novo)': norm.get('address', ''),
             'CEP (novo)': norm.get('cep', ''),
+            'Sabor (novo)': norm.get('flavor', ''),
+            'Pagamento (novo)': norm.get('payment_method', ''),
         })
 
-    print(render_table(rows, ['ID', 'Nome (orig.)', 'Endereço (orig.)', 'CEP (orig.)', 'Nome (novo)', 'Endereço (novo)', 'CEP (novo)']))
+    print(render_table(rows, [
+        'ID', 'Nome (orig.)', 'Endereço (orig.)', 'CEP (orig.)',
+        'Sabor (orig.)', 'Pagamento (orig.)',
+        'Nome (novo)', 'Endereço (novo)', 'CEP (novo)', 'Sabor (novo)', 'Pagamento (novo)',
+    ]))
 
 
 def run_new_system() -> None:
