@@ -28,6 +28,25 @@ def clean_cep(raw: str) -> str:
     return digits
 
 
+def normalize_key(key: str) -> str:
+    return re.sub(r"[^a-z0-9]", '', str(key or '').strip().lower())
+
+
+def find_raw_value(source: Dict, aliases: List[str]) -> str:
+    if not isinstance(source, dict):
+        return ''
+    normalized_aliases = {normalize_key(alias) for alias in aliases}
+    for key, value in source.items():
+        if normalize_key(key) in normalized_aliases and value not in (None, ''):
+            return value
+    for value in source.values():
+        if isinstance(value, dict):
+            found = find_raw_value(value, aliases)
+            if found:
+                return found
+    return ''
+
+
 def clean_pizza_flavor(raw: str) -> str:
     if not raw:
         return ''
@@ -76,12 +95,18 @@ def clean_payment_method(raw: str) -> str:
 
 
 def normalize_customer(raw_customer: Dict) -> Dict:
+    raw_name = find_raw_value(raw_customer, ['raw_name', 'nome_cliente', 'clientenome', 'nome', 'cliente'])
+    raw_address = find_raw_value(raw_customer, ['raw_address', 'endereco', 'enderecoTexto', 'info_endereco', 'address'])
+    raw_cep = find_raw_value(raw_customer, ['raw_cep', 'cep', 'cep_raw', 'cep_code', 'postal_code', 'codigoPostal'])
+    raw_flavor = find_raw_value(raw_customer, ['raw_flavor', 'sabor', 'saborPizza', 'pizzasabor', 'pizza'])
+    raw_payment = find_raw_value(raw_customer, ['raw_payment', 'payment', 'formapagamento', 'pagamento', 'payment_method'])
+
     return {
-        'name': clean_name(raw_customer.get('raw_name', '')),
-        'address': clean_address(raw_customer.get('raw_address', '')),
-        'cep': clean_cep(raw_customer.get('raw_cep', '')),
-        'flavor': clean_pizza_flavor(raw_customer.get('raw_flavor', '')),
-        'payment_method': clean_payment_method(raw_customer.get('raw_payment', '')),
+        'name': clean_name(raw_name),
+        'address': clean_address(raw_address),
+        'cep': clean_cep(raw_cep),
+        'flavor': clean_pizza_flavor(raw_flavor),
+        'payment_method': clean_payment_method(raw_payment),
     }
 
 

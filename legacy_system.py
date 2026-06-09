@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from typing import Dict, List
 
-from etl.converter import normalize_customers, save_payload, OUTPUT_PATH
+from etl.converter import normalize_customers, save_payload, OUTPUT_PATH, find_raw_value
 
 DATA_DIR = Path(__file__).resolve().parent / 'data'
 DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -22,6 +22,24 @@ def prompt_input(prompt: str, required: bool = True) -> str:
         print('Este campo é obrigatório. Tente novamente.')
 
 
+def build_legacy_record(raw_name: str, raw_address: str, raw_cep: str, raw_flavor: str, raw_payment: str) -> Dict:
+    return {
+        'clienteNome': f'  {raw_name.strip().upper()}  ',
+        'dadosEnderecos': {
+            'enderecoTexto': f'  {raw_address.strip().lower()}  ',
+            'cep_code': raw_cep,
+        },
+        'pedido': {
+            'saborPizza': f' {raw_flavor.strip().title()} ',
+            'formaPagamento': raw_payment,
+        },
+        'metadata': {
+            'origem': 'legacy_json_desorganizado',
+            'observacao': 'dados bagunçados de sistema antigo'
+        }
+    }
+
+
 def collect_customers() -> List[Dict]:
     customers = []
     print('=== Sistema Legado - Cadastro de Clientes ===')
@@ -34,13 +52,7 @@ def collect_customers() -> List[Dict]:
         raw_cep = prompt_input('CEP: ')
         raw_flavor = prompt_input('Sabor da pizza: ')
         raw_payment = prompt_input('Forma de pagamento: ')
-        customers.append({
-            'raw_name': raw_name,
-            'raw_address': raw_address,
-            'raw_cep': raw_cep,
-            'raw_flavor': raw_flavor,
-            'raw_payment': raw_payment,
-        })
+        customers.append(build_legacy_record(raw_name, raw_address, raw_cep, raw_flavor, raw_payment))
         print('Cliente adicionado. Informe o próximo ou deixe o nome vazio para finalizar.\n')
 
     return customers
@@ -65,15 +77,19 @@ def show_summary(raw_customers: List[Dict], normalized_customers: List[Dict]) ->
     print('\n=== Dados enviados pelo sistema legado ===')
     raw_rows = [
         {
-            'Nome': r['raw_name'],
-            'Endereço': r['raw_address'],
-            'CEP': r['raw_cep'],
-            'Sabor': r.get('raw_flavor', ''),
-            'Pagamento': r.get('raw_payment', ''),
+            'Nome': find_raw_value(r, ['raw_name', 'nome_cliente', 'clienteNome', 'clientenome', 'nome', 'cliente']),
+            'Endereço': find_raw_value(r, ['raw_address', 'endereco', 'enderecoTexto', 'info_endereco', 'address']),
+            'CEP': find_raw_value(r, ['raw_cep', 'cep', 'cep_raw', 'cep_code', 'postal_code', 'codigoPostal']),
+            'Sabor': find_raw_value(r, ['raw_flavor', 'sabor', 'saborPizza', 'pizzasabor', 'pizza']),
+            'Pagamento': find_raw_value(r, ['raw_payment', 'payment', 'formapagamento', 'pagamento', 'payment_method']),
         }
         for r in raw_customers
     ]
     print(render_table(raw_rows, ['Nome', 'Endereço', 'CEP', 'Sabor', 'Pagamento']))
+
+    print('\n=== JSON bruto armazenado no sistema legado ===')
+    for i, record in enumerate(raw_customers, start=1):
+        print(f'{i}. {json.dumps(record, ensure_ascii=False)}')
 
     print('\n=== Dados após conversão para o sistema novo ===')
     normalized_rows = [

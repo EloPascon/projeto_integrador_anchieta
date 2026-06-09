@@ -49,7 +49,7 @@ Como usar:
 python legacy_system.py
 ```
 
-O `legacy_system.py` pede nome, endereço, CEP, sabor da pizza e forma de pagamento, e usa o conversor de dados para normalizar as informações. Ao final, ele pergunta se você deseja abrir o `new_system.py` imediatamente.
+O `legacy_system.py` pede nome, endereço, CEP, sabor da pizza e forma de pagamento, e salva os dados em um JSON legado desorganizado que simula uma tabela bagunçada. Ele usa o conversor de dados para normalizar as informações e, ao final, pergunta se você deseja abrir o `new_system.py` imediatamente.
 
 O `new_system.py` mostra o valor original e o valor convertido lado a lado, incluindo o sabor da pizza e a forma de pagamento.
 
