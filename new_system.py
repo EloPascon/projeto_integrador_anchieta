@@ -2,6 +2,8 @@ import json
 from pathlib import Path
 from typing import Dict, List
 
+from etl.converter import find_raw_value
+
 DATA_DIR = Path(__file__).resolve().parent / 'data'
 PAYLOAD_PATH = DATA_DIR / 'legacy_to_new.json'
 
@@ -45,15 +47,23 @@ def show_new_system_data(payload: Dict) -> None:
     for idx, (raw, norm) in enumerate(zip(raw_customers, normalized_customers), start=1):
         rows.append({
             'ID': idx,
-            'Nome (orig.)': raw.get('raw_name', ''),
-            'Endereço (orig.)': raw.get('raw_address', ''),
-            'CEP (orig.)': raw.get('raw_cep', ''),
+            'Nome (orig.)': find_raw_value(raw, ['raw_name', 'nome_cliente', 'clienteNome', 'clientenome', 'nome', 'cliente']),
+            'Endereço (orig.)': find_raw_value(raw, ['raw_address', 'endereco', 'enderecoTexto', 'info_endereco', 'address']),
+            'CEP (orig.)': find_raw_value(raw, ['raw_cep', 'cep', 'cep_raw', 'cep_code', 'postal_code', 'codigoPostal']),
+            'Sabor (orig.)': find_raw_value(raw, ['raw_flavor', 'sabor', 'saborPizza', 'pizzasabor', 'pizza']),
+            'Pagamento (orig.)': find_raw_value(raw, ['raw_payment', 'payment', 'formapagamento', 'pagamento', 'payment_method']),
             'Nome (novo)': norm.get('name', ''),
             'Endereço (novo)': norm.get('address', ''),
             'CEP (novo)': norm.get('cep', ''),
+            'Sabor (novo)': norm.get('flavor', ''),
+            'Pagamento (novo)': norm.get('payment_method', ''),
         })
 
-    print(render_table(rows, ['ID', 'Nome (orig.)', 'Endereço (orig.)', 'CEP (orig.)', 'Nome (novo)', 'Endereço (novo)', 'CEP (novo)']))
+    print(render_table(rows, [
+        'ID', 'Nome (orig.)', 'Endereço (orig.)', 'CEP (orig.)',
+        'Sabor (orig.)', 'Pagamento (orig.)',
+        'Nome (novo)', 'Endereço (novo)', 'CEP (novo)', 'Sabor (novo)', 'Pagamento (novo)',
+    ]))
 
 
 def run_new_system() -> None:

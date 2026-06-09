@@ -1,16 +1,28 @@
 {
   "raw_customers": [
     {
-      "raw_name": "Eloisa Pascon",
-      "raw_address": "R.Florianopolis",
-      "raw_cep": "13202141"
+      "clienteNome": "  EL  ",
+      "dadosEnderecos": {
+        "enderecoTexto": "  r. sedkfroeisirksdmkj  ",
+        "cep_code": "13202134"
+      },
+      "pedido": {
+        "saborPizza": " Mucarela ",
+        "formaPagamento": "credito"
+      },
+      "metadata": {
+        "origem": "legacy_json_desorganizado",
+        "observacao": "dados bagunçados de sistema antigo"
+      }
     }
   ],
   "normalized_customers": [
     {
-      "name": "Eloisa Pascon",
-      "address": "R.Florianopolis",
-      "cep": "13202-141"
+      "name": "El",
+      "address": "R. Sedkfroeisirksdmkj",
+      "cep": "13202-134",
+      "flavor": "Mucarela",
+      "payment_method": "Cartão de Crédito"
     }
   ]
 }
