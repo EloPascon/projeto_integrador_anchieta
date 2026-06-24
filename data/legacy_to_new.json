@@ -1,28 +1,24 @@
 {
   "raw_customers": [
     {
-      "clienteNome": "  EL  ",
+      "clienteNome": "  joao  ",
       "dadosEnderecos": {
-        "enderecoTexto": "  r. sedkfroeisirksdmkj  ",
-        "cep_code": "13202134"
+        "enderecoTexto": "  rua central 123  ",
+        "cep_code": "12345-678"
       },
       "pedido": {
-        "saborPizza": " Mucarela ",
-        "formaPagamento": "credito"
-      },
-      "metadata": {
-        "origem": "legacy_json_desorganizado",
-        "observacao": "dados bagunçados de sistema antigo"
+        "saborPizza": "muzzarela",
+        "formaPagamento": "cartao"
       }
     }
   ],
   "normalized_customers": [
     {
-      "name": "El",
-      "address": "R. Sedkfroeisirksdmkj",
-      "cep": "13202-134",
-      "flavor": "Mucarela",
-      "payment_method": "Cartão de Crédito"
+      "name": "Joao",
+      "address": "Rua Central 123",
+      "cep": "12345-678",
+      "flavor": "Mussarela",
+      "payment_method": "Cartão"
     }
   ]
 }

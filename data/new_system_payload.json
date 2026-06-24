@@ -1,0 +1,12 @@
+{
+  "raw_customers": [],
+  "normalized_customers": [
+    {
+      "name": "Joao",
+      "address": "Rua Central 123",
+      "cep": "12345-678",
+      "flavor": "Mussarela",
+      "payment_method": "Cartao"
+    }
+  ]
+}
