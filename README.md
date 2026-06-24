@@ -38,12 +38,13 @@ O script `main.py` irá:
 
 ### Novos sistemas interativos
 
-O repositório agora inclui dois scripts adicionais que funcionam no mesmo projeto:
+O repositório agora inclui três formas de usar o fluxo de integração:
 
 - `legacy_system.py` — sistema legado interativo que permite cadastrar clientes pelo terminal e salva os dados brutos em `data/legacy_to_new.json`.
 - `new_system.py` — sistema novo que lê esse arquivo gerado e mostra os dados convertidos no formato do sistema moderno.
+- `api/server.py` — servidor HTTP simples que expõe um endpoint REST para enviar dados do sistema legado e receber o payload convertido.
 
-Como usar:
+Como usar o sistema legado interativo:
 
 ```powershell
 python legacy_system.py
@@ -52,6 +53,66 @@ python legacy_system.py
 O `legacy_system.py` pede nome, endereço, CEP, sabor da pizza e forma de pagamento, e salva os dados em um JSON legado desorganizado que simula uma tabela bagunçada. Ele usa o conversor de dados para normalizar as informações e, ao final, pergunta se você deseja abrir o `new_system.py` imediatamente.
 
 O `new_system.py` mostra o valor original e o valor convertido lado a lado, incluindo o sabor da pizza e a forma de pagamento.
+
+### API do sistema legado (MCP)
+
+Executar o servidor API:
+
+```powershell
+python -m api
+```
+
+Endpoints do sistema legado:
+
+- `POST /legacy/convert`
+  - Enviar JSON com `raw_customers` como lista de registros legados.
+  - Retorna `raw_customers` e `normalized_customers`.
+  - Salva em `data/legacy_to_new.json`.
+- `GET /legacy/convert`
+  - Retorna o último payload convertido salvo.
+
+Endpoints do sistema novo:
+
+- `POST /new/receive`
+  - Enviar JSON com `normalized_customers` como lista de registros tratados.
+  - Aceita opcionalmente `raw_customers`.
+  - Retorna o mesmo payload e salva em `data/new_system_payload.json`.
+- `GET /new/receive`
+  - Retorna o último payload recebido pelo sistema novo.
+
+Exemplo de requisição para o sistema legado:
+
+```powershell
+$body = '{
+  "raw_customers": [
+    {
+      "clienteNome": "  joao  ",
+      "dadosEnderecos": {"enderecoTexto": "  rua central 123  ", "cep_code": "12345-678"},
+      "pedido": {"saborPizza": "muzzarela", "formaPagamento": "cartao"}
+    }
+  ]
+}'
+
+Invoke-RestMethod -Uri http://127.0.0.1:8000/legacy/convert -Method POST -Body $body -ContentType 'application/json'
+```
+
+Exemplo de requisição para o sistema novo:
+
+```powershell
+$body = '{
+  "normalized_customers": [
+    {
+      "name": "Joao",
+      "address": "Rua Central 123",
+      "cep": "12345-678",
+      "flavor": "Mussarela",
+      "payment_method": "Cartão"
+    }
+  ]
+}'
+
+Invoke-RestMethod -Uri http://127.0.0.1:8000/new/receive -Method POST -Body $body -ContentType 'application/json'
+```
 
 Uso de IA no desenvolvimento (para relatório acadêmico)
 - As expressões regulares usadas em `etl/transformer.py` foram projetadas para capturar variações de grafia e erros de digitação (ex.: "Muzzarela", "Mussarela", "muza") e mapear para identificadores padrão de produto (ex.: `PZ001` -> "Mussarela").
